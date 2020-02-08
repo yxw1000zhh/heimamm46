@@ -1,13 +1,15 @@
 <template>
   <div class='login-container'>
       <div class="left-box">
-        <img src="'../../assets/9.png" class="logo"><img>
+        <div class="title-box">
+          <img src="../../assets/9.png" alt="">
         <span class="title">黑马面面</span>
         <span class="line"></span>
         <span class="sub-title">用户登录</span>
+        </div>
       </div>
       <img src="../../assets/login_banner_ele.png" alt="">
-
+<!-- 托管软件应用 -->
   </div>
 
 </template>
