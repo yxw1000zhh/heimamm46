@@ -9,15 +9,15 @@
         </div>
       
       <!-- 表单 -->
-      <el-form ref="form" :model="form" label-width="43px">
+      <el-form ref="loginForm" :rules='rules' :model="loginForm" label-width="43px">
   <el-form-item >
     <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="loginForm.phone"></el-input>
-  </el-form-item>
-  <el-form-item >
+  </el-form-item >
+  <el-form-item prop='password'>
     <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
   </el-form-item>
   <!-- 验证码 -->
-  <el-form-item >
+  <el-form-item prop='loginCode'>
     <el-row>
       <el-col :span="17">
        <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
@@ -36,8 +36,8 @@
     </el-checkbox>
   </el-form-item>
   <el-form-item >
-   <el-button type="primary">登陆</el-button>
-   <el-button type="primary">注册</el-button>
+   <el-button class="my-btn" type="primary" @click="submitForm('loginForm')">登陆</el-button>
+   <el-button @click="showRegister" class="my-btn" type="primary">注册</el-button>
    
   </el-form-item>
  
@@ -45,13 +45,18 @@
 </div>
       <img src="../../assets/login_banner_ele.png" alt="">
 <!-- 托管软件应用 -->
+<reisterDialog ref='registerDialog'></reisterDialog>
   </div>
 
 </template>
 
 <script>
+import reisterDialog from './components/registerDialog'
 export default {
  name:'login',
+ components:{
+  reisterDialog
+ },
  data() {
    return {
      loginForm:{
@@ -59,7 +64,32 @@ export default {
        password:'',
        loginCode:'',
        isChecked:false
+     },
+     rules:{
+       password:[
+         {required: true,message:'密码不能为空',trigger:'blur'},
+         {min:6,max:12,message:'密码长度为6-12位',trigger:'blur'}
+       ],
+      loginCode:[
+         {required:true,message:'验证码不能为空',trigger:'blur'},
+           {min:6,max:12,message:'yanz长度为4位',trigger:'blur'}
+       ],
      }
+   }
+ },
+ methods: {
+   submitForm(formName){
+    this.$refs[formName].validate(valid=>{
+      if (valid) {
+        this.$message.success('验证成功')
+      }else{
+        this.$message.error('验证失败');
+        return false;
+      }
+    })
+   },
+   showRegister(){
+     this.$refs.registerDialog.dialogFormVisible=true;
    }
  },
 }
@@ -103,6 +133,13 @@ export default {
        width: 100%;
        height: 40.8px;
      }
+      .my-btn{
+        width: 100%;
+       margin-left:0px;
+       margin-bottom: 26px;
+         
+      }
+    
  }
  .el-checkbox{
    display: flex;
